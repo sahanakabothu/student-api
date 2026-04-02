@@ -1,21 +1,31 @@
 package com.sahana.studentapi.controller;
 
 import com.sahana.studentapi.Student;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.sahana.studentapi.service.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
+@RequestMapping("/students")
 public class StudentController {
 
-    @GetMapping("/students")
+    @Autowired
+    private StudentService service;
+
+    @GetMapping
     public List<Student> getStudents() {
-        return Arrays.asList(
-                new Student(1, "Sahi", "CSE"),
-                new Student(2, "Ravi", "ECE"),
-                new Student(3, "Anu", "IT")
-        );
+        return service.getStudents();
+    }
+
+    @PostMapping
+    public Student addStudent(@RequestBody Student student) {
+        return service.addStudent(student);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteStudent(@PathVariable int id) {
+        return service.deleteStudent(id);
     }
 }
